@@ -1,3 +1,5 @@
+# Selection apenas com o maior
+
 def selectionSort1(uma_lista):
     for posicao_verificada in range(len(uma_lista)-1,0,-1):
         posicao_maior = 0
@@ -9,34 +11,48 @@ def selectionSort1(uma_lista):
         uma_lista[posicao_maior] = temp
         
 
+# Selection com maior e menor
+
 def selectionSort(uma_lista):
-    i = 0
-    for posicao_verificada in range(len(uma_lista)-1,len(uma_lista)//2-1,-1):
-        posicao_maior = int(i)
-        posicao_menor = posicao_verificada+i
-        maior = False
-        menor = False
-        for posicao in range(i, posicao_verificada+1):
+    limite_esquerdo = 0
+    for limite_direito in range(len(uma_lista)-1, len(uma_lista)//2-1, -1):
+        posicao_maior = int(limite_esquerdo)
+        posicao_menor = int(limite_direito)
+
+        for posicao in range(limite_esquerdo, limite_direito+1):
             if uma_lista[posicao] >= uma_lista[posicao_maior]:
                 posicao_maior = posicao
-                maior = True
+                
             if uma_lista[posicao] <= uma_lista[posicao_menor]:
                 posicao_menor = posicao
-                menor = True
 
-        if maior:
-            temp = uma_lista[posicao_verificada]
-            uma_lista[posicao_verificada] = uma_lista[posicao_maior]
-            uma_lista[posicao_maior] = temp
-        if menor:
-            temp = uma_lista[0+i]
-            uma_lista[0+i] = uma_lista[posicao_menor]
-            uma_lista[posicao_menor] = temp
+        if limite_direito == posicao_menor and limite_esquerdo == posicao_maior:
+            uma_lista[limite_direito], uma_lista[limite_esquerdo] = uma_lista[limite_esquerdo], uma_lista[limite_direito]
+            
+        else:
+            temp_maior = uma_lista[limite_direito]
+            temp_menor = uma_lista[limite_esquerdo]
+            uma_lista[limite_direito] = uma_lista[posicao_maior]
+            uma_lista[posicao_maior] = temp_maior
 
-        i += 1
+            if posicao_menor != limite_direito and posicao_maior != limite_esquerdo:
+                uma_lista[limite_esquerdo] = uma_lista[posicao_menor]
+                uma_lista[posicao_menor] = temp_menor
+
+            elif posicao_menor == limite_direito:
+                uma_lista[limite_esquerdo] = temp_maior
+                uma_lista[posicao_maior] = temp_menor
+
+            elif posicao_maior == limite_esquerdo:
+                uma_lista[limite_esquerdo] = uma_lista[posicao_menor]
+                uma_lista[posicao_menor] = temp_maior
+
+        limite_esquerdo += 1
 
     return uma_lista
 
+
+# MergeSort com slice
 
 def mergeSort(uma_lista):
     if len(uma_lista)>1:
@@ -71,6 +87,8 @@ def mergeSort(uma_lista):
     return uma_lista
 
 
+# Merge + Selection
+
 def hibridSort(uma_lista):
     if len(uma_lista)>128:
         meio = len(uma_lista)//2
@@ -102,34 +120,43 @@ def hibridSort(uma_lista):
             k=k+1
 
     else:
-        i = 0
-        for posicao_verificada in range(len(uma_lista)-1,len(uma_lista)//2-1,-1):
-            posicao_maior = int(i)
-            posicao_menor = posicao_verificada+i
-            maior = False
-            menor = False
-            for posicao in range(i, posicao_verificada+1):
+        limite_esquerdo = 0
+        for limite_direito in range(len(uma_lista)-1, len(uma_lista)//2-1, -1):
+            posicao_maior = int(limite_esquerdo)
+            posicao_menor = int(limite_direito)
+
+            for posicao in range(limite_esquerdo, limite_direito+1):
                 if uma_lista[posicao] >= uma_lista[posicao_maior]:
                     posicao_maior = posicao
-                    maior = True
+                    
                 if uma_lista[posicao] <= uma_lista[posicao_menor]:
                     posicao_menor = posicao
-                    menor = True
 
-            if maior:
-                temp = uma_lista[posicao_verificada]
-                uma_lista[posicao_verificada] = uma_lista[posicao_maior]
-                uma_lista[posicao_maior] = temp
-            if menor:
-                temp = uma_lista[0+i]
-                uma_lista[0+i] = uma_lista[posicao_menor]
-                uma_lista[posicao_menor] = temp
+            if limite_direito == posicao_menor and limite_esquerdo == posicao_maior:
+                uma_lista[limite_direito], uma_lista[limite_esquerdo] = uma_lista[limite_esquerdo], uma_lista[limite_direito]
+            else:
+                temp_maior = uma_lista[limite_direito]
+                temp_menor = uma_lista[limite_esquerdo]
+                uma_lista[limite_direito] = uma_lista[posicao_maior]
+                uma_lista[posicao_maior] = temp_maior
 
-            i += 1
+                if posicao_menor != limite_direito and posicao_maior != limite_esquerdo:
+                    uma_lista[limite_esquerdo] = uma_lista[posicao_menor]
+                    uma_lista[posicao_menor] = temp_menor
+
+                elif posicao_menor == limite_direito:
+                    uma_lista[limite_esquerdo] = temp_maior
+                    uma_lista[posicao_maior] = temp_menor
+
+                elif posicao_maior == limite_esquerdo:
+                    uma_lista[limite_esquerdo] = uma_lista[posicao_menor]
+                    uma_lista[posicao_menor] = temp_maior
+
+            limite_esquerdo += 1
 
     return uma_lista
 
 
 if __name__ == "__main__":
-    lista = [2,1,3,8,5,6,7,9,4,10,2,1,3,8,5,6,7,9,4,10]
+    lista = [2,1,3,8,5,6,7,9,4,10,2,1.2,3,8,5,6,7,9,4,10]
     print(selectionSort(lista))
